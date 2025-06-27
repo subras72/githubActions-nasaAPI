@@ -1,4 +1,4 @@
-name: Call NASA API
+name: Call NASA API and Save Result
 
 on:
   workflow_dispatch:
@@ -15,4 +15,10 @@ jobs:
       env:
         NASA_API_TOKEN: ${{ secrets.NASA_API_TOKEN }}
       run: |
-        curl -H "Authorization: Bearer $NASA_API_TOKEN" "https://api.nasa.gov/planetary/apod?api_key=$NASA_API_TOKEN"
+        curl -H "Authorization: Bearer $NASA_API_TOKEN" "https://api.nasa.gov/planetary/apod?api_key=$NASA_API_TOKEN" -o nasa_response.json
+
+    - name: Upload NASA API Response
+      uses: actions/upload-artifact@v3
+      with:
+        name: nasa-api-response
+        path: nasa_response.json
